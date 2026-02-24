@@ -12,10 +12,13 @@ const createUrl = async (req, res) => {
       return res.status(201).json({ data: urlFound });
     } else {
       if (alias !== "") {
+        // check if shortId with alias already exists
         const aliasFound = await urlModel.findOne({ shortId: alias });
         if (aliasFound) {
           return res.status(400).json({ message: "Alias already exists" });
         }
+          const newUrl = await urlModel.insertOne({ fullUrl, shortId: alias });
+          return res.status(201).json({ data: newUrl }); 
       }
       const newUrl = await urlModel.insertOne({ fullUrl });
       return res.status(201).json({ data: newUrl });
@@ -40,6 +43,7 @@ const getAllUrl = async (req, res) => {
 
 const getUrl = async (req, res) => {
   try {
+    
     const { id } = req.params;
     const url = await urlModel.findOne({ shortId: id });
     if (!url) {
