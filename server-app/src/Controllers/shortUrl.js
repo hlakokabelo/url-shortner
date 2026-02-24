@@ -4,15 +4,15 @@ const createUrl = async (req, res) => {
   try {
     const { fullUrl } = req.body;
     if (!fullUrl) {
-      return res.status(400).json({ message: "Full URL is required" });
+      return res.status(400).json({ message: "param fullUrl is required" });
     }
     const urlFound = await urlModel.findOne({ fullUrl });
 
     if (urlFound) {
-      return res.status(409).json({ error: "URL already exists" });
+      return res.status(201).json({ data: urlFound });
     } else {
       const newUrl = await urlModel.insertOne({ fullUrl });
-      res.status(201).json({ newUrl });
+      return res.status(201).json({ data: newUrl });
     }
 
     return res.status(200).json({ fullUrl });
@@ -67,7 +67,7 @@ const deleteUrl = async (req, res) => {
 
     if (name === "CastError") {
       return res.status(400).json({
-        message: "Invalid URL ID :"+error.value,
+        message: "Invalid URL ID :" + error.value,
       });
     }
     res.status(500).json({
