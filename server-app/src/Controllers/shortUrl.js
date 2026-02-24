@@ -33,9 +33,12 @@ const createUrl = async (req, res) => {
 const getAllUrl = async (req, res) => {
   try {
     const allUrls = await urlModel.find({});
-    res.status(200).json({ total: allUrls.length, allUrls });
+    const linksOnly = allUrls.map((url) => (url.fullUrl));
+
+    res.status(200).json({ total: allUrls.length,linksOnly });
   } catch (error) {
     res
+
       .status(500)
       .json({ message: "Internal server error", error: error.message });
   }
@@ -43,7 +46,7 @@ const getAllUrl = async (req, res) => {
 
 const getUrl = async (req, res) => {
   try {
-    
+
     const { id } = req.params;
     const url = await urlModel.findOne({ shortId: id });
     if (!url) {
