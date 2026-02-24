@@ -2,7 +2,7 @@ import { urlModel } from "../model/urlModel.js";
 
 const createUrl = async (req, res) => {
   try {
-    const { fullUrl } = req.body;
+    const { fullUrl, alias } = req.body;
     if (!fullUrl) {
       return res.status(400).json({ message: "param fullUrl is required" });
     }
@@ -11,11 +11,15 @@ const createUrl = async (req, res) => {
     if (urlFound) {
       return res.status(201).json({ data: urlFound });
     } else {
+      if (alias !== "") {
+        const aliasFound = await urlModel.findOne({ shortId: alias });
+        if (aliasFound) {
+          return res.status(400).json({ message: "Alias already exists" });
+        }
+      }
       const newUrl = await urlModel.insertOne({ fullUrl });
       return res.status(201).json({ data: newUrl });
     }
-
-    return res.status(200).json({ fullUrl });
   } catch (error) {
     res
       .status(500)
