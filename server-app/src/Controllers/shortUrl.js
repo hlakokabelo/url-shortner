@@ -26,7 +26,7 @@ const createUrl = async (req, res) => {
 const getAllUrl = async (req, res) => {
   try {
     const allUrls = await urlModel.find({});
-    res.status(200).json({ allUrls });
+    res.status(200).json({ total: allUrls.length, allUrls });
   } catch (error) {
     res
       .status(500)
@@ -54,12 +54,27 @@ const getUrl = async (req, res) => {
 const deleteUrl = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const exists = await urlModel.findOne({ _id: id });
+
+    if (!exists) {
+      return res.status(404).json({ error: "URL not found" });
+    }
     const deletedUrl = await urlModel.findByIdAndDelete({ _id: id });
     res.status(200).json({ status: "URL deleted successfully", deletedUrl });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    const { message, name } = error;
+
+    if (name === "CastError") {
+      return res.status(400).json({
+        message: "Invalid URL ID :"+error.value,
+      });
+    }
+    res.status(500).json({
+      message: "Internal server error",
+      error: message,
+      name: name,
+    });
   }
 };
 

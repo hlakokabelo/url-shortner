@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { nanoid } from "nanoid";
 import connectDB from "./config/dbConfig.js";
 import shorthUrlRoute from "./Routes/shortUrl.js";
 dotenv.config();

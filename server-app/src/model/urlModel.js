@@ -10,7 +10,7 @@ const shortUrlSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      default: () => nanoid().substring(0, 10),
+      default: () => nanoid().substring(0, 6),
     },
     clicks: {
       type: Number,
