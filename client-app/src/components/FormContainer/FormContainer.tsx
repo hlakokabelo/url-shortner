@@ -10,6 +10,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { BsQrCode } from "react-icons/bs";
+import { createShortUrl } from "../../util/dbServices.js";
 
 interface IFormContainerProps {}
 
@@ -22,25 +23,21 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleShorten = () => {
-    if (submitted) return setSubmitted(false);
+  const resetData = () => {
+    setUrl("");
+    setAlias("");
+    setSubmitted(false);
+  };
+
+  const handleShorten = async () => {
+    if (submitted) return resetData();
 
     if (!url.trim()) return setError(true);
 
-
-
-
-
-
-
-
-
-
-
-    
+    const data = await createShortUrl(url, alias);
+    setAlias(data.shortId);
     setError(false);
     setSubmitted(true);
-    alert(url);
   };
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +47,11 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
   };
 
   return (
-    <div className="min-h-fit  bg-gray-100 flex items-center justify-center mt-2 ">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg shadow-slate-600 hover:shadow-xl overflow-hidden ">
+
+    <div className="flex justify-center mr-1 ml-1 mt-[5rem] items-center min-w-[100px]">
+      <div className=" bg-slate-300 rounded-2xl shadow-lg shadow-slate-600 hover:shadow-xl overflow-hidden ">
         {/* Tabs */}
-        <div className="flex ">
+        <div className="flex">
           <button
             onClick={() => setActiveTab("shorten")}
             className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-colors ${
@@ -171,7 +169,7 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
               {/* Submit Button */}
               <button
                 onClick={handleShorten}
-                className="w-full bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-semibold py-3.5 rounded-lg text-sm transition-all duration-150"
+                className={`w-full ${submitted ? " bg-slate-600 hover:bg-slate-700 " : " bg-teal-700 hover:bg-teal-800 "} active:scale-[0.98] text-white font-semibold py-3.5 rounded-lg text-sm transition-all duration-150`}
               >
                 {submitted ? "Shorten Another Link" : "Shorten Link"}
               </button>

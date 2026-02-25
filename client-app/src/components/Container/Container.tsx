@@ -5,14 +5,12 @@ import { getAllUrl } from "../../util/dbServices.js";
 interface IContainerProps {}
 
 const Container: React.FunctionComponent<IContainerProps> = () => {
-
   interface Idata {
-  fullUrl: string;
-  clicks: number;
-  shortId: string;
-}
-  const [data, setData] = React.useState<Idata[]>([
-  ]);
+    fullUrl: string;
+    clicks: number;
+    shortId: string;
+  }
+  const [data, setData] = React.useState<Idata[]>([]);
   React.useEffect(() => {
     getData();
   }, []);
@@ -21,13 +19,12 @@ const Container: React.FunctionComponent<IContainerProps> = () => {
     setData(await getAllUrl());
   };
   return (
-    <>
+    <div className="flex flex-row">
       <FormContainer />
 
-      <div className="flex-col w-7/8 m-2">
-        <h2 className=" justify-center text-center text-xl mb-1 text-slate-950">
-          Your Recent Links:
-        </h2>
+      <div className=" flex-col w-7/8 m-2 justify-center mt-8 sm:absolute sm:bottom-0">
+        <h2 className="text-3xl mb-2 text-slate-950">Your Recent Links:</h2>
+
         <div className="grid gap-2 lg:grid-cols-2 flex-wrap flex-shrink min-w-50">
           {data.map((d) => (
             <UrlDisplay
@@ -38,7 +35,7 @@ const Container: React.FunctionComponent<IContainerProps> = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
