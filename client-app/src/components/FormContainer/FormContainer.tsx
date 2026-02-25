@@ -1,29 +1,46 @@
 import * as React from "react";
 
 import { useState } from "react";
-import { FiLink, FiGlobe, FiEdit2, FiNavigation, FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import {
+  FiLink,
+  FiGlobe,
+  FiEdit2,
+  FiNavigation,
+  FiAlertCircle,
+  FiCheckCircle,
+} from "react-icons/fi";
 import { BsQrCode } from "react-icons/bs";
 
 interface IFormContainerProps {}
 
 const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
-   const API = import.meta.env.VITE_API_SHORTEN_URL;
-  
+  const domain = import.meta.env.VITE_DOMAIN_URL;
 
   const [activeTab, setActiveTab] = useState("shorten");
   const [url, setUrl] = useState("");
   const [alias, setAlias] = useState("");
-  const [domain, setDomain] = useState(API);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
 
   const handleShorten = () => {
-    if (!url.trim()) {
-      setError(true);
-      return;
-    }
+    if (submitted) return setSubmitted(false);
+
+    if (!url.trim()) return setError(true);
+
+
+
+
+
+
+
+
+
+
+
+    
     setError(false);
     setSubmitted(true);
+    alert(url);
   };
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +50,10 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
   };
 
   return (
-    <div className="min-h-fit bg-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="min-h-fit  bg-gray-100 flex items-center justify-center mt-2 ">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg shadow-slate-600 hover:shadow-xl overflow-hidden ">
         {/* Tabs */}
-        <div className="flex">
+        <div className="flex ">
           <button
             onClick={() => setActiveTab("shorten")}
             className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-colors ${
@@ -83,6 +100,7 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
                         ? "border-red-500 focus:border-red-500"
                         : "border-gray-300 focus:border-teal-600"
                     }`}
+                    disabled={submitted}
                   />
                   {error && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -104,12 +122,9 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
                     Domain
                   </label>
                   <div className="relative">
-                    <div
-                      className="w-full overflow-scroll appearance-none px-3 py-3 pr-8 rounded-lg border border-gray-300 text-sm text-gray-700 bg-white outline-none focus:border-teal-600 cursor-pointer"
-                    >
-                      <p>{API}</p>
-                </div>
-                    
+                    <div className="w-full appearance-none px-3 py-3 pr-8 rounded-lg border border-gray-300 text-sm text-gray-700 bg-white outline-none focus:border-teal-600 cursor-pointer">
+                      <p>{domain}</p>
+                    </div>
                   </div>
                 </div>
                 {/* Alias */}
@@ -117,7 +132,9 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
                   <label className="flex items-center gap-1.5 text-sm font-semibold text-gray-700">
                     <FiEdit2 className="w-4 h-4 text-gray-500" />
                     Alias
-                    <span className="text-gray-400 font-normal text-xs">(optional)</span>
+                    <span className="text-gray-400 font-normal text-xs">
+                      (optional)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -125,8 +142,11 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
                     onChange={(e) => setAlias(e.target.value)}
                     placeholder="Add alias here"
                     className="w-full px-3 py-3 rounded-lg border border-gray-300 text-sm outline-none focus:border-teal-600 placeholder-gray-400"
+                    disabled={submitted}
                   />
-                  <p className="text-xs text-gray-400">Must be at least 5 characters</p>
+                  <p className="text-xs text-gray-400">
+                    Must be at least 5 characters
+                  </p>
                 </div>
               </div>
 
@@ -153,15 +173,24 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
                 onClick={handleShorten}
                 className="w-full bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-semibold py-3.5 rounded-lg text-sm transition-all duration-150"
               >
-                Shorten Link
+                {submitted ? "Shorten Another Link" : "Shorten Link"}
               </button>
 
               {/* Footer */}
               <p className="text-xs text-gray-500 leading-relaxed">
                 By clicking Shorten Link, you agree to our{" "}
-                <a href="#" className="text-teal-600 hover:underline">Terms of Service</a>,{" "}
-                <a href="#" className="text-teal-600 hover:underline">Privacy Policy</a>, and{" "}
-                <a href="#" className="text-teal-600 hover:underline">Use of Cookies</a>.
+                <a href="#" className="text-teal-600 hover:underline">
+                  Terms of Service
+                </a>
+                ,{" "}
+                <a href="#" className="text-teal-600 hover:underline">
+                  Privacy Policy
+                </a>
+                , and{" "}
+                <a href="#" className="text-teal-600 hover:underline">
+                  Use of Cookies
+                </a>
+                .
               </p>
             </>
           ) : (
@@ -172,9 +201,6 @@ const FormContainer: React.FunctionComponent<IFormContainerProps> = () => {
         </div>
       </div>
     </div>
-  
-
-   
   );
 };
 

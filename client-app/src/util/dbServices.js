@@ -2,7 +2,9 @@ import axios from "axios"
 
 const createShortUrl = async (originalUrl) => { }
 const getAllUrl = async () => { 
-    const response = await axios.get(`${process.env.VITE_API_URL}`);    
+    const {data} = await axios.get(`${import.meta.env.VITE_API_SHORTEN_URL}`); 
+    console.log(data)
+    return data.data   
 }
 const getUrl = async (shortId) => { }
 const deleteUrl = async (id) => { } 

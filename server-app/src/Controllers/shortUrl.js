@@ -17,8 +17,8 @@ const createUrl = async (req, res) => {
         if (aliasFound) {
           return res.status(400).json({ message: "Alias already exists" });
         }
-          const newUrl = await urlModel.insertOne({ fullUrl, shortId: alias });
-          return res.status(201).json({ data: newUrl }); 
+        const newUrl = await urlModel.insertOne({ fullUrl, shortId: alias });
+        return res.status(201).json({ data: newUrl });
       }
       const newUrl = await urlModel.insertOne({ fullUrl });
       return res.status(201).json({ data: newUrl });
@@ -33,9 +33,8 @@ const createUrl = async (req, res) => {
 const getAllUrl = async (req, res) => {
   try {
     const allUrls = await urlModel.find({});
-    const linksOnly = allUrls.map((url) => (url.fullUrl));
 
-    res.status(200).json({ total: allUrls.length,linksOnly });
+    res.status(200).json({  data: allUrls });
   } catch (error) {
     res
 
@@ -46,7 +45,6 @@ const getAllUrl = async (req, res) => {
 
 const getUrl = async (req, res) => {
   try {
-
     const { id } = req.params;
     const url = await urlModel.findOne({ shortId: id });
     if (!url) {
