@@ -9,7 +9,7 @@ const createUrl = async (req, res) => {
     const urlFound = await urlModel.findOne({ fullUrl });
 
     if (urlFound) {
-      return res.status(201).json({...urlFound });
+      return res.status(201).json({ ...urlFound });
     } else {
       if (alias !== "") {
         // check if shortId with alias already exists
@@ -18,10 +18,10 @@ const createUrl = async (req, res) => {
           return res.status(400).json({ message: "Alias already exists" });
         }
         const newUrl = await urlModel.insertOne({ fullUrl, shortId: alias });
-        return res.status(201).json({...newUrl });
+        return res.status(201).json({ ...newUrl });
       }
       const newUrl = await urlModel.insertOne({ fullUrl });
-      return res.status(201).json({  ...newUrl });
+      return res.status(201).json({ ...newUrl });
     }
   } catch (error) {
     res
@@ -34,7 +34,10 @@ const getAllUrl = async (req, res) => {
   try {
     const allUrls = await urlModel.find({});
 
-    res.status(200).json({ allUrls });
+    res.status(200).json({ ...allUrls.map((url)=>{
+      const link = `http://localhost:5000/api/shortenUrl/${url.shortId}`
+      
+      return {...url._doc,apiLink:link}}) });
   } catch (error) {
     res
 
@@ -52,7 +55,7 @@ const getUrl = async (req, res) => {
     }
     url.clicks += 1;
     await url.save();
-    res.redirect(`${url.fullUrl}`);
+    res.status(200).json({ ...url._doc });
   } catch (error) {
     res
       .status(500)
@@ -70,7 +73,9 @@ const deleteUrl = async (req, res) => {
       return res.status(404).json({ error: "URL not found" });
     }
     const deletedUrl = await urlModel.findByIdAndDelete({ _id: id });
-    res.status(200).json({ status: "URL deleted successfully", data:deletedUrl });
+    res
+      .status(200)
+      .json({ status: "URL deleted successfully", data: deletedUrl });
   } catch (error) {
     const { message, name } = error;
 
@@ -85,6 +90,23 @@ const deleteUrl = async (req, res) => {
       name: name,
     });
   }
+};
+
+const updateUrl = async (req, res) => {
+  const { oldAlias, alias } = req.body;
+  if (oldAlias !== "" && alias !== "") {
+    // check if shortId with alias already exists
+    const aliasFound = await urlModel.findOne({ shortId: oldAlias });
+    if (!aliasFound) {
+      return res
+        .status(400)
+        .json({ message: "Link with alias does not exist" });
+    }
+    aliasFound.shortId = alias;
+    await aliasFound.save();
+    return res.status(204).json({ ...newUrl });
+  }
+  return res.status(400).json({ message: "alias must have a value" });
 };
 
 export { createUrl, getAllUrl, getUrl, deleteUrl };
