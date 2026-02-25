@@ -12,13 +12,15 @@ const createShortUrl = async (fullUrl, alias) => {
   return response.data._doc;
 };
 const getAllUrl = async () => {
-  const { data } = await axios.get(`${import.meta.env.VITE_API_SHORTEN_URL}`);
+  const res = await axios.get(`${import.meta.env.VITE_API_SHORTEN_URL}`);
+  const { data, status } = res;
   console.log(data);
-  return data.allUrls;
+
+  if (status < 400) return data;
+  else return []
 };
 const getUrl = async (shortId) => {
-    console.log(    `${import.meta.env.VITE_API_SHORTEN_URL}/${shortId}`,
-)
+  console.log(`${import.meta.env.VITE_API_SHORTEN_URL}/${shortId}`);
   const { data } = await axios.get(
     `${import.meta.env.VITE_API_SHORTEN_URL}/${shortId}`,
   );

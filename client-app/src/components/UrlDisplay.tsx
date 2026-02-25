@@ -16,7 +16,7 @@ const UrlDisplay: React.FunctionComponent<IUrlDisplayProps> = ({
   const icon = `https://www.google.com/s2/favicons?domain=${fullUrl}&sz=32`;
 
   return (
-    <div className="bg-slate-300  grid w-full grid-cols-6 gap-0 items-center border rounded-lg shadow-md">
+    <div key={shortId} className="bg-slate-300  grid w-full grid-cols-6 gap-0 items-center border rounded-lg shadow-md">
       <img src={icon} alt="image" className="col-span-1" />
       <div className="text-justify col-span-3 m-0">
         <a className="cursor-pointer" href={window.location.href

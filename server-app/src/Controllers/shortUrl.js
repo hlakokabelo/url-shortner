@@ -32,12 +32,15 @@ const createUrl = async (req, res) => {
 
 const getAllUrl = async (req, res) => {
   try {
-    const allUrls = await urlModel.find({});
+    let allUrls = await urlModel.find({});
 
-    res.status(200).json({ ...allUrls.map((url)=>{
-      const link = `http://localhost:5000/api/shortenUrl/${url.shortId}`
-      
-      return {...url._doc,apiLink:link}}) });
+    allUrls = allUrls.map((url) => {
+      const link = `http://localhost:5000/api/shortenUrl/${url.shortId}`;
+
+      return { ...url._doc, apiLink: link };
+    });
+
+    res.status(200).json([...allUrls]);
   } catch (error) {
     res
 
