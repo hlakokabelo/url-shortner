@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export default function LinkNotFound() {
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const url = searchParams.get('url');
 
   return (
