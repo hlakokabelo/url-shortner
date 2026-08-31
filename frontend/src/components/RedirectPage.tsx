@@ -14,7 +14,7 @@ const RedirectPage: React.FunctionComponent<IRedirectPageProps> = () => {
       const { data } = await getUrl(shortUrl!);
 
       if (!data) {
-        navigate("/404");
+        navigate(`/404?url=${shortUrl}`);
         return;
       }
       window.location.href = data.fullUrl;
