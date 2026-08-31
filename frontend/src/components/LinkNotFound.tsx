@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { AlertTriangle, Search, Link2 } from "lucide-react";
+import { useSearchParams } from 'react-router-dom';
+
 
 export default function LinkNotFound() {
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const url = searchParams.get('url');
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
 
@@ -15,7 +21,7 @@ export default function LinkNotFound() {
 
       {/* Message */}
       <p className="text-gray-600 mb-10 max-w-md">
-        This short link does not exist. It may have been removed, expired,
+        This short link, {url}, does not exist. It may have been removed, expired,
         or typed incorrectly.
       </p>
 
