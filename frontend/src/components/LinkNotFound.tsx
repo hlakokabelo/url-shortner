@@ -21,7 +21,11 @@ export default function LinkNotFound() {
 
       {/* Message */}
       <p className="text-gray-600 mb-10 max-w-md">
-        This short link, {url}, does not exist. It may have been removed, expired,
+        This short link{" "}
+         <code className="rounded-md bg-zinc-100 px-2 py-1 font-mono text-sm font-medium text-zinc-900 dark:bg-zinc-800 dark:text-zinc-200">
+        {url}
+      </code>{" "}
+         does not exist. It may have been removed, expired,
         or typed incorrectly.
       </p>
 
