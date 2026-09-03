@@ -10,7 +10,7 @@ export function LoadingState() {
         <div className="mx-auto h-14 w-14 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
 
         {/* Main message */}
-        <h2 className="mt-6 text-xl sm:text-2xl font-semibold text-gray-900">
+        <h2 className="mt-6 text-xl sm:text-2xl font-semibold text-amber-800">
           Loading...
         </h2>
 
